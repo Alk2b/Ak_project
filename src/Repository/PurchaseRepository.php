@@ -25,4 +25,15 @@ class PurchaseRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOneBySessionAndGame(string $sessionId, int $gameId): ?Purchase
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.sessionId = :sessionId')
+            ->andWhere('p.game = :gameId')
+            ->setParameter('sessionId', $sessionId)
+            ->setParameter('gameId', $gameId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

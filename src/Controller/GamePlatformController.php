@@ -151,7 +151,7 @@ class GamePlatformController extends AbstractController
     }
 
     #[Route('/checkout', name: 'app_checkout')]
-    public function checkout(Request $request, CartItemRepository $cartItemRepository, EntityManagerInterface $em): Response
+    public function checkout(Request $request, CartItemRepository $cartItemRepository, EntityManagerInterface $em, \App\Repository\PurchaseRepository $purchaseRepository): Response
     {
         $sessionId = $this->getSessionId($request);
         $cartItems = $cartItemRepository->findBy(['sessionId' => $sessionId]);
@@ -163,23 +163,24 @@ class GamePlatformController extends AbstractController
         
         $totalAmount = 0;
         foreach ($cartItems as $item) {
-            $purchase = new Purchase();
-            $purchase->setGame($item->getGame());
-            $purchase->setSessionId($sessionId);
-            $purchase->setPurchaseDate(new \DateTimeImmutable());
-            $purchase->setPrice($item->getGame()->getPrice());
-            $purchase->setQuantity($item->getQuantity());
-            
+            $existingPurchase = $purchaseRepository->findOneBySessionAndGame($sessionId, $item->getGame()->getId());
+            if ($existingPurchase) {
+                $existingPurchase->setQuantity($existingPurchase->getQuantity() + $item->getQuantity());
+                $existingPurchase->setPurchaseDate(new \DateTimeImmutable()); // Met à jour la date d'achat
+            } else {
+                $purchase = new Purchase();
+                $purchase->setGame($item->getGame());
+                $purchase->setSessionId($sessionId);
+                $purchase->setPurchaseDate(new \DateTimeImmutable());
+                $purchase->setPrice($item->getGame()->getPrice());
+                $purchase->setQuantity($item->getQuantity());
+                $em->persist($purchase);
+            }
             $totalAmount += $item->getGame()->getPrice() * $item->getQuantity();
-            
-            $em->persist($purchase);
             $em->remove($item);
         }
-        
         $em->flush();
-        
         $this->addFlash('success', 'Achat terminé avec succès ! Total: ' . number_format($totalAmount, 2) . '€. Vos jeux sont maintenant disponibles dans votre bibliothèque.');
-        
         return $this->redirectToRoute('app_library');
     }
 }
