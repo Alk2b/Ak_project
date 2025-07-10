@@ -3,66 +3,50 @@
 {% block title %}Bibliothèque - Video Game Platform{% endblock %}
 
 {% block body %}
-    <h1>Votre Bibliothèque</h1>
-    <p>Tous vos jeux achetés et téléchargés</p>
+    <section style="padding-left: 2rem; padding-right: 2rem;">
+        <h1>Votre Bibliothèque</h1>
+        <p>Tous vos jeux achetés et téléchargés</p>
 
-    {% for message in app.flashes('success') %}
-        <div style="background-color: #28a745; color: white; padding: 1rem; margin: 1rem 0; border-radius: 4px;">
-            {{ message }}
-        </div>
-    {% endfor %}
-
-    {% if purchases is empty %}
-        <div style="text-align: center; padding: 3rem;">
-            <h2>Votre bibliothèque est vide</h2>
-            <p>Vous n'avez pas encore acheté de jeux. Découvrez notre boutique !</p>
-            <a href="{{ path('app_shop') }}" class="btn">Parcourir la boutique</a>
-        </div>
-    {% else %}
-        <div class="game-grid">
-            {% for purchase in purchases %}
-                <div class="game-card">
-                    {% if purchase.game.image %}
-                        <img src="{{ purchase.game.image }}" alt="{{ purchase.game.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
-                    {% endif %}
-                    <h3>{{ purchase.game.title }}</h3>
-                    <p>{{ purchase.game.description }}</p>
-                    <p style="color: #ccc; font-size: 0.9rem;">
-                        Acheté le {{ purchase.purchaseDate|date('d/m/Y à H:i') }}
-                        {% if purchase.quantity > 1 %}
-                            - Quantité: {{ purchase.quantity }}
-                        {% endif %}
-                    </p>
-                    <div style="margin: 1rem 0;">
-                        <div style="background-color: #4a4a4a; border-radius: 4px; height: 8px; overflow: hidden;">
-                            <div style="background-color: #28a745; height: 100%; width: 100%;"></div>
-                        </div>
-                        <small>Téléchargé - Prêt à jouer</small>
-                    </div>
-                    <div style="margin-top: 1rem;">
-                        <button class="btn btn-success">▶ Jouer</button>
-                        <button class="btn" style="margin-left: 0.5rem;">Paramètres</button>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-        <div style="margin-top: 3rem; padding: 2rem; background-color: #2d2d2d; border-radius: 8px; text-align: center;">
-            <h3>Statistiques de jeu</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                <div>
-                    <div style="font-size: 2rem; color: #28a745;">{{ purchases|length }}</div>
-                    <div>Jeux possédés</div>
-                </div>
-                <div>
-                    <div style="font-size: 2rem; color: #007bff;">{{ purchases|length * 15 }}h</div>
-                    <div>Temps de jeu estimé</div>
-                </div>
-                <div>
-                    <div style="font-size: 2rem; color: #ffc107;">{{ purchases|length * 4 }}</div>
-                    <div>Succès débloqués</div>
-                </div>
+        {% for message in app.flashes('success') %}
+            <div style="background-color: #28a745; color: white; padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+                {{ message }}
             </div>
-        </div>
-    {% endif %}
+        {% endfor %}
+
+        {% if purchases is empty %}
+            <div style="text-align: center; padding: 3rem;">
+                <h2>Votre bibliothèque est vide</h2>
+                <p>Vous n'avez pas encore acheté de jeux. Découvrez notre boutique !</p>
+                <a href="{{ path('app_shop') }}" class="btn">Parcourir la boutique</a>
+            </div>
+        {% else %}
+            <div class="game-grid">
+                {% for purchase in purchases %}
+                    <div class="game-card">
+                        {% if purchase.game.image %}
+                            <img src="{{ purchase.game.image }}" alt="{{ purchase.game.title }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                        {% endif %}
+                        <h3>{{ purchase.game.title }}</h3>
+                        <p>{{ purchase.game.description }}</p>
+                        <p style="color: #ccc; font-size: 0.9rem;">
+                            Acheté le {{ purchase.purchaseDate|date('d/m/Y à H:i') }}
+                            {% if purchase.quantity > 1 %}
+                                - Quantité: {{ purchase.quantity }}
+                            {% endif %}
+                        </p>
+                        <div style="margin: 1rem 0;">
+                            <div style="background-color: #4a4a4a; border-radius: 4px; height: 8px; overflow: hidden;">
+                                <div style="background-color: #28a745; height: 100%; width: 100%;"></div>
+                            </div>
+                            <small>Téléchargé - Prêt à jouer</small>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-success">▶ Jouer</button>
+                            <button class="btn" style="margin-left: 0.5rem;">Paramètres</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
 {% endblock %}

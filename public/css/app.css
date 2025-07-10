@@ -74,3 +74,8 @@ body {
 .btn-success:hover {
     background-color: #218838;
 }
+
+section {
+    padding-left: 32px;
+    padding-right: 32px;
+}
