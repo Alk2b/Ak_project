@@ -82,9 +82,9 @@
                     </div>
                     
                     <div style="margin-top: 2rem;">
-                        <button class="btn btn-success" style="width: 100%;" onclick="proceedToCheckout()">
+                        <a href="{{ path('app_checkout') }}" class="btn btn-success" style="width: 100%; display: block; text-align: center; text-decoration: none;">
                             Procéder au paiement
-                        </button>
+                        </a>
                         <a href="{{ path('app_shop') }}" style="display: block; text-align: center; margin-top: 1rem; color: #ccc;">
                             Continuer les achats
                         </a>
@@ -93,10 +93,4 @@
             </div>
         {% endif %}
     </div>
-
-    <script>
-        function proceedToCheckout() {
-            alert('Redirection vers le système de paiement...\n\nFonctionnalité en cours de développement !');
-        }
-    </script>
 {% endblock %}

@@ -2,145 +2,39 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Video Game Platform{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>VGP</text></svg>">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
         {% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-        
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #1a1a1a;
-                color: #ffffff;
-            }
-            
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-            
-            nav {
-                background-color: #2d2d2d;
-                padding: 1rem 0;
-                margin-bottom: 2rem;
-            }
-            
-            nav ul {
-                list-style: none;
-                display: flex;
-                gap: 2rem;
-                margin: 0;
-                padding: 0;
-                justify-content: center;
-            }
-            
-            nav a {
-                color: #ffffff;
-                text-decoration: none;
-                padding: 0.5rem 1rem;
-                border-radius: 4px;
-                transition: background-color 0.3s;
-            }
-            
-            nav a:hover, nav a.active {
-                background-color: #4a4a4a;
-            }
-            
-            .game-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 2rem;
-                margin: 2rem 0;
-            }
-            
-            .game-card {
-                background-color: #2d2d2d;
-                border-radius: 8px;
-                padding: 1.5rem;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-                transition: transform 0.3s;
-            }
-            
-            .game-card:hover {
-                transform: translateY(-4px);
-            }
-            
-            .btn {
-                display: inline-block;
-                padding: 0.75rem 1.5rem;
-                background-color: #007bff;
-                color: white;
-                text-decoration: none;
-                border-radius: 4px;
-                border: none;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
-            
-            .btn:hover {
-                background-color: #0056b3;
-            }
-            
-            .btn-success {
-                background-color: #28a745;
-            }
-            
-            .btn-success:hover {
-                background-color: #1e7e34;
-            }
-            
-            .alert {
-                padding: 1rem;
-                margin: 1rem 0;
-                border-radius: 4px;
-            }
-            
-            .alert-success {
-                background-color: #d4edda;
-                color: #155724;
-                border: 1px solid #c3e6cb;
-            }
-            
-            h1, h2, h3 {
-                color: #ffffff;
-            }
-            
-            .price {
-                font-size: 1.2rem;
-                font-weight: bold;
-                color: #28a745;
-            }
-        </style>
     </head>
     <body>
-        <nav>
-            <div class="container">
-                <ul>
-                    <li><a href="{{ path('app_index') }}" class="{{ app.request.get('_route') == 'app_index' ? 'active' : '' }}">Accueil</a></li>
-                    <li><a href="{{ path('app_shop') }}" class="{{ app.request.get('_route') == 'app_shop' ? 'active' : '' }}">Boutique</a></li>
-                    <li><a href="{{ path('app_cart') }}" class="{{ app.request.get('_route') == 'app_cart' ? 'active' : '' }}">Panier</a></li>
-                    <li><a href="{{ path('app_library') }}" class="{{ app.request.get('_route') == 'app_library' ? 'active' : '' }}">Bibliothèque</a></li>
-                </ul>
+        <!-- Navigation -->
+        <nav class="bg-gray-800 text-white shadow-lg">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <a href="{{ path('app_home') }}" class="text-xl font-bold">🎮 Gaming Platform</a>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <a href="{{ path('app_home') }}" class="hover:text-blue-400 transition-colors">Accueil</a>
+                        <a href="{{ path('app_shop') }}" class="hover:text-blue-400 transition-colors">Boutique</a>
+                        <a href="{{ path('app_library') }}" class="hover:text-blue-400 transition-colors">Bibliothèque</a>
+                        <a href="{{ path('app_cart') }}" class="hover:text-blue-400 transition-colors flex items-center">
+                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m9.5-6v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"></path>
+                            </svg>
+                            Panier
+                        </a>
+                    </div>
+                </div>
             </div>
         </nav>
 
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">{{ message }}</div>
-            {% endfor %}
-            
-            {% for message in app.flashes('error') %}
-                <div class="alert alert-error">{{ message }}</div>
-            {% endfor %}
-
-            {% block body %}{% endblock %}
-        </div>
+        {% block body %}{% endblock %}
     </body>
 </html>
