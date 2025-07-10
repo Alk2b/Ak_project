@@ -39,11 +39,16 @@ class GamePlatformController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function cart(Request $request, CartItemRepository $cartItemRepository): Response
     {
-        // Récupérer l'ID de session
-        $sessionId = $request->getSession()->getId();
+        $sessionId = $this->getSessionId($request);
+        
+        // Debug: afficher l'ID de session
+        dump('Session ID: ' . $sessionId);
         
         // Récupérer les items du panier pour cette session
         $cartItems = $cartItemRepository->findBy(['sessionId' => $sessionId]);
+        
+        // Debug: afficher le nombre d'items
+        dump('Nombre d\'items dans le panier: ' . count($cartItems));
         
         // Calculer le total
         $total = 0;
@@ -60,7 +65,10 @@ class GamePlatformController extends AbstractController
     #[Route('/cart/add/{id}', name: 'app_cart_add')]
     public function addToCart(Game $game, Request $request, EntityManagerInterface $em, CartItemRepository $cartItemRepository): Response
     {
-        $sessionId = $request->getSession()->getId();
+        $sessionId = $this->getSessionId($request);
+        
+        // Debug
+        dump('Add to cart - Session ID: ' . $sessionId);
         
         // Vérifier si l'item existe déjà dans le panier
         $existingItem = $cartItemRepository->findOneBy([
@@ -71,6 +79,7 @@ class GamePlatformController extends AbstractController
         if ($existingItem) {
             // Augmenter la quantité
             $existingItem->setQuantity($existingItem->getQuantity() + 1);
+            dump('Item existant trouvé, nouvelle quantité: ' . $existingItem->getQuantity());
         } else {
             // Créer un nouvel item
             $cartItem = new CartItem();
@@ -78,6 +87,7 @@ class GamePlatformController extends AbstractController
             $cartItem->setSessionId($sessionId);
             $cartItem->setQuantity(1);
             $em->persist($cartItem);
+            dump('Nouvel item créé');
         }
         
         $em->flush();
@@ -88,8 +98,19 @@ class GamePlatformController extends AbstractController
     }
     
     #[Route('/cart/remove/{id}', name: 'app_cart_remove')]
-    public function removeFromCart(CartItem $cartItem, EntityManagerInterface $em): Response
+    public function removeFromCart(CartItem $cartItem, Request $request, EntityManagerInterface $em): Response
     {
+        $sessionId = $this->getSessionId($request);
+        
+        // Debug
+        dump('Remove from cart - Session ID: ' . $sessionId);
+        dump('CartItem Session ID: ' . $cartItem->getSessionId());
+        
+        if ($cartItem->getSessionId() !== $sessionId) {
+            $this->addFlash('error', 'Erreur: cet item ne vous appartient pas.');
+            return $this->redirectToRoute('app_cart');
+        }
+        
         $gameName = $cartItem->getGame()->getTitle();
         $em->remove($cartItem);
         $em->flush();
@@ -100,8 +121,19 @@ class GamePlatformController extends AbstractController
     }
 
     #[Route('/cart/decrease/{id}', name: 'app_cart_decrease')]
-    public function decreaseFromCart(CartItem $cartItem, EntityManagerInterface $em): Response
+    public function decreaseFromCart(CartItem $cartItem, Request $request, EntityManagerInterface $em): Response
     {
+        $sessionId = $this->getSessionId($request);
+        
+        // Debug
+        dump('Decrease from cart - Session ID: ' . $sessionId);
+        dump('CartItem Session ID: ' . $cartItem->getSessionId());
+        
+        if ($cartItem->getSessionId() !== $sessionId) {
+            $this->addFlash('error', 'Erreur: cet item ne vous appartient pas.');
+            return $this->redirectToRoute('app_cart');
+        }
+        
         if ($cartItem->getQuantity() > 1) {
             // Diminuer la quantité
             $cartItem->setQuantity($cartItem->getQuantity() - 1);
@@ -116,6 +148,23 @@ class GamePlatformController extends AbstractController
         }
         
         return $this->redirectToRoute('app_cart');
+    }
+
+    private function getSessionId(Request $request): string
+    {
+        $session = $request->getSession();
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+        
+        // Créer un ID de panier stable
+        $cartId = $session->get('cart_id');
+        if (!$cartId) {
+            $cartId = uniqid('cart_', true);
+            $session->set('cart_id', $cartId);
+        }
+        
+        return $cartId;
     }
 
     #[Route('/library', name: 'app_library')]
