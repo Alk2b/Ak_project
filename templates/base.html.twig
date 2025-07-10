@@ -5,7 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
@@ -14,27 +14,22 @@
     </head>
     <body>
         <!-- Navigation -->
-        <nav class="bg-gray-800 text-white shadow-lg">
-            <div class="container mx-auto px-4">
-                <div class="flex justify-between items-center py-4">
-                    <div class="flex items-center">
-                        <a href="{{ path('app_home') }}" class="text-xl font-bold">🎮 Gaming Platform</a>
-                    </div>
-                    <div class="flex items-center space-x-6">
-                        <a href="{{ path('app_home') }}" class="hover:text-blue-400 transition-colors">Accueil</a>
-                        <a href="{{ path('app_shop') }}" class="hover:text-blue-400 transition-colors">Boutique</a>
-                        <a href="{{ path('app_library') }}" class="hover:text-blue-400 transition-colors">Bibliothèque</a>
-                        <a href="{{ path('app_cart') }}" class="hover:text-blue-400 transition-colors flex items-center">
-                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m9.5-6v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"></path>
-                            </svg>
-                            Panier
-                        </a>
-                    </div>
+        <nav style="background: #222; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                <div style="display: flex; align-items: center;">
+                    <a href="{{ path('app_index') }}" style="font-size: 1.5rem; font-weight: bold; color: #fff; text-decoration: none; line-height: 1;">
+                        Steam
+                    </a>
+                </div>
+                <div style="display: flex; gap: 2rem;">
+                    <a href="{{ path('app_index') }}" class="btn">Accueil</a>
+                    <a href="{{ path('app_shop') }}" class="btn">Boutique</a>
+                    <a href="{{ path('app_library') }}" class="btn">Bibliothèque</a>
+                    <a href="{{ path('app_cart') }}" class="btn">Panier</a>
                 </div>
             </div>
         </nav>
-
+        
         {% block body %}{% endblock %}
     </body>
 </html>
