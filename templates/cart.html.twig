@@ -21,36 +21,41 @@
         {% else %}
             <div id="cart-items">
                 {% for item in cart_items %}
-                    <div class="game-card">
-                        <h3>{{ item.game.title }}</h3>
-                        <p>{{ item.game.description }}</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div class="price">{{ item.game.price|number_format(2, ',', ' ') }} €</div>
-                                <div style="font-size: 0.9rem; color: #ccc;">
-                                    Total: {{ (item.game.price * item.quantity)|number_format(2, ',', ' ') }} €
+                    <div class="game-card" style="display: flex; gap: 1rem; align-items: center;">
+                        {% if item.game.image %}
+                            <img src="{{ item.game.image }}" alt="{{ item.game.title }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                        {% endif %}
+                        <div style="flex: 1;">
+                            <h3>{{ item.game.title }}</h3>
+                            <p>{{ item.game.description }}</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div class="price">{{ item.game.price|number_format(2, ',', ' ') }} €</div>
+                                    <div style="font-size: 0.9rem; color: #ccc;">
+                                        Total: {{ (item.game.price * item.quantity)|number_format(2, ',', ' ') }} €
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <a href="{{ path('app_cart_decrease', {'id': item.id}) }}" 
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <a href="{{ path('app_cart_decrease', {'id': item.id}) }}" 
+                                           class="btn" 
+                                           style="background-color: #6c757d; padding: 0.25rem 0.5rem; font-size: 0.8rem;">
+                                            -
+                                        </a>
+                                        <span style="margin: 0 0.5rem;">{{ item.quantity }}</span>
+                                        <a href="{{ path('app_cart_add', {'id': item.game.id}) }}" 
+                                           class="btn" 
+                                           style="background-color: #28a745; padding: 0.25rem 0.5rem; font-size: 0.8rem;">
+                                            +
+                                        </a>
+                                    </div>
+                                    <a href="{{ path('app_cart_remove', {'id': item.id}) }}" 
                                        class="btn" 
-                                       style="background-color: #6c757d; padding: 0.25rem 0.5rem; font-size: 0.8rem;">
-                                        -
-                                    </a>
-                                    <span style="margin: 0 0.5rem;">{{ item.quantity }}</span>
-                                    <a href="{{ path('app_cart_add', {'id': item.game.id}) }}" 
-                                       class="btn" 
-                                       style="background-color: #28a745; padding: 0.25rem 0.5rem; font-size: 0.8rem;">
-                                        +
+                                       style="background-color: #dc3545;"
+                                       onclick="return confirm('Êtes-vous sûr de vouloir retirer ce jeu du panier ?')">
+                                        Retirer
                                     </a>
                                 </div>
-                                <a href="{{ path('app_cart_remove', {'id': item.id}) }}" 
-                                   class="btn" 
-                                   style="background-color: #dc3545;"
-                                   onclick="return confirm('Êtes-vous sûr de vouloir retirer ce jeu du panier ?')">
-                                    Retirer
-                                </a>
                             </div>
                         </div>
                     </div>
