@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Video Game Platform{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🎮</text></svg>">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>VGP</text></svg>">
         {% block stylesheets %}
         {% endblock %}
 
@@ -123,10 +123,10 @@
         <nav>
             <div class="container">
                 <ul>
-                    <li><a href="{{ path('app_index') }}" class="{{ app.request.get('_route') == 'app_index' ? 'active' : '' }}">🏠 Accueil</a></li>
-                    <li><a href="{{ path('app_shop') }}" class="{{ app.request.get('_route') == 'app_shop' ? 'active' : '' }}">🛒 Boutique</a></li>
-                    <li><a href="{{ path('app_cart') }}" class="{{ app.request.get('_route') == 'app_cart' ? 'active' : '' }}">🛍️ Panier</a></li>
-                    <li><a href="{{ path('app_library') }}" class="{{ app.request.get('_route') == 'app_library' ? 'active' : '' }}">📚 Bibliothèque</a></li>
+                    <li><a href="{{ path('app_index') }}" class="{{ app.request.get('_route') == 'app_index' ? 'active' : '' }}">Accueil</a></li>
+                    <li><a href="{{ path('app_shop') }}" class="{{ app.request.get('_route') == 'app_shop' ? 'active' : '' }}">Boutique</a></li>
+                    <li><a href="{{ path('app_cart') }}" class="{{ app.request.get('_route') == 'app_cart' ? 'active' : '' }}">Panier</a></li>
+                    <li><a href="{{ path('app_library') }}" class="{{ app.request.get('_route') == 'app_library' ? 'active' : '' }}">Bibliothèque</a></li>
                 </ul>
             </div>
         </nav>
