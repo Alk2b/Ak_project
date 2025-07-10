@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Video Game Platform{% endblock %}
+
+{% block body %}
+    <div class="hero">
+        <h1>🎮 Bienvenue sur Video Game Platform</h1>
+        <p>Découvrez, achetez et jouez aux meilleurs jeux vidéo !</p>
+    </div>
+
+    <section>
+        <h2>Jeux en vedette</h2>
+        <div class="game-grid">
+            {% for game in featured_games %}
+                <div class="game-card">
+                    <h3>{{ game.title }}</h3>
+                    <p>{{ game.description }}</p>
+                    <div class="price">{{ game.price }}€</div>
+                    <a href="{{ path('app_shop') }}" class="btn">Voir dans la boutique</a>
+                </div>
+            {% else %}
+                <p>Aucun jeu disponible pour le moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section style="margin-top: 3rem;">
+        <h2>Commencer maintenant</h2>
+        <p>Explorez notre collection de jeux et commencez votre aventure gaming !</p>
+        <a href="{{ path('app_shop') }}" class="btn btn-success">Explorer la boutique</a>
+    </section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique - Video Game Platform{% endblock %}
+
+{% block body %}
+    <h1>Boutique</h1>
+    <p>Découvrez notre sélection de jeux vidéo</p>
+
+    <div class="game-grid">
+        {% for game in games %}
+            <div class="game-card">
+                <h3>{{ game.title }}</h3>
+                <p>{{ game.description }}</p>
+                <div class="price">{{ game.price }}€</div>
+                <div style="margin-top: 1rem;">
+                    <a href="{{ path('app_cart_add', {'id': game.id}) }}" class="btn">Ajouter au panier</a>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucun jeu disponible pour le moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

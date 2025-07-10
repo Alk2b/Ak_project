@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier - Video Game Platform{% endblock %}
+
+{% block body %}
+    <h1>Votre Panier</h1>
+
+    {% for message in app.flashes('success') %}
+        <div style="background-color: #28a745; color: white; padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div id="cart-content">
+        {% if cart_items is empty %}
+            <div id="empty-cart" style="text-align: center; padding: 3rem;">
+                <h2>Votre panier est vide</h2>
+                <p>Découvrez nos jeux et commencez votre collection !</p>
+                <a href="{{ path('app_shop') }}" class="btn">Continuer les achats</a>
+            </div>
+        {% else %}
+            <div id="cart-items">
+                {% for item in cart_items %}
+                    <div class="game-card">
+                        <h3>{{ item.game.title }}</h3>
+                        <p>{{ item.game.description }}</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="price">{{ item.game.price|number_format(2, ',', ' ') }} €</div>
+                                <div style="font-size: 0.9rem; color: #ccc;">
+                                    Total: {{ (item.game.price * item.quantity)|number_format(2, ',', ' ') }} €
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <a href="{{ path('app_cart_decrease', {'id': item.id}) }}" 
+                                       class="btn" 
+                                       style="background-color: #6c757d; padding: 0.25rem 0.5rem; font-size: 0.8rem;">
+                                        -
+                                    </a>
+                                    <span style="margin: 0 0.5rem;">{{ item.quantity }}</span>
+                                    <a href="{{ path('app_cart_add', {'id': item.game.id}) }}" 
+                                       class="btn" 
+                                       style="background-color: #28a745; padding: 0.25rem 0.5rem; font-size: 0.8rem;">
+                                        +
+                                    </a>
+                                </div>
+                                <a href="{{ path('app_cart_remove', {'id': item.id}) }}" 
+                                   class="btn" 
+                                   style="background-color: #dc3545;"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir retirer ce jeu du panier ?')">
+                                    Retirer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                <div style="margin-top: 2rem; padding: 1rem; background-color: #2d2d2d; border-radius: 8px;">
+                    <h3>Récapitulatif</h3>
+                    {% set subtotal = total %}
+                    {% set tax = (subtotal * 0.2)|round(2) %}
+                    {% set total_with_tax = (subtotal + tax)|round(2) %}
+                    
+                    <div style="display: flex; justify-content: space-between; margin: 1rem 0;">
+                        <span>Sous-total:</span>
+                        <span>{{ subtotal|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin: 1rem 0;">
+                        <span>TVA (20%):</span>
+                        <span>{{ tax|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                    <hr style="border-color: #4a4a4a;">
+                    <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold;">
+                        <span>Total:</span>
+                        <span>{{ total_with_tax|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                    
+                    <div style="margin-top: 2rem;">
+                        <button class="btn btn-success" style="width: 100%;" onclick="proceedToCheckout()">
+                            Procéder au paiement
+                        </button>
+                        <a href="{{ path('app_shop') }}" style="display: block; text-align: center; margin-top: 1rem; color: #ccc;">
+                            Continuer les achats
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function proceedToCheckout() {
+            alert('Redirection vers le système de paiement...\n\nFonctionnalité en cours de développement !');
+        }
+    </script>
+{% endblock %}
