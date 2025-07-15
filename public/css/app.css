@@ -134,22 +134,22 @@ section {
     margin-top: 0.5rem;
 }
 
-.news-prev, .news-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #fff;
-    color: #223a5e;
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    font-size: 1.5rem;
+.news-prev, .news-next, .carousel-btn, .btn-circle {
+    background: transparent !important;
+    color: #111 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 2.5rem !important;
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     cursor: pointer;
-    z-index: 10;
-    transition: background 0.2s;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: none;
 }
 
 .news-prev:hover, .news-next:hover {
@@ -184,43 +184,46 @@ section {
     background: #223a5e;
 }
 
+/* Carrousel style type Tailwind DaisyUI, sans fond ni rond sur les flèches */
 .carousel {
     width: 100%;
     max-width: 900px;
     margin: 2rem auto 0 auto;
     position: relative;
     min-height: 350px;
-    /* Ajout d'une marge basse pour éviter le chevauchement */
     margin-bottom: 3rem;
 }
-
-@media (max-width: 900px) {
-    .carousel {
-        min-height: 250px;
-        margin-bottom: 2rem;
-    }
-}
-
 .carousel-item {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     height: 350px;
     display: none;
-    transition: opacity 0.7s;
     border-radius: 16px;
     overflow: hidden;
 }
-
+.carousel-item.active {
+    display: block;
+}
 .carousel-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+.carousel-nav {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(-50%);
+    z-index: 2;
+}
 
 @media (max-width: 900px) {
-    .carousel-item, .carousel-item img {
+    .carousel, .carousel-item, .carousel-item img {
         height: 220px;
+        min-height: 220px;
     }
 }
